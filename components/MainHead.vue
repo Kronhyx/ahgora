@@ -12,7 +12,7 @@
           <b-form class="w-75 mx-auto" @submit.prevent="search">
             <b-form-row>
               <b-input-group size="lg">
-                <b-form-input placeholder="Search" class="h-100" :disabled="loading" />
+                <b-form-input v-model="searchTerm" placeholder="Search" class="h-100" :disabled="loading" />
                 <template #append>
                   <b-btn variant="primary" type="submit" :disabled="loading">
                     <span v-show="!loading">OK</span>
@@ -34,11 +34,12 @@
 <script lang="ts">
 // @ts-ignore
 import TopDivider from '@/static/images/divider.svg?inline'
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Getter, Vue } from 'nuxt-property-decorator'
 
 @Component({ components: { TopDivider } })
 export default class MainHead extends Vue {
-  protected loading = false
+  @Getter('isLoading') readonly loading!: boolean
+  protected searchTerm: string = ''
 
   get randomHue () {
     return Math.floor(Math.random() * 360) + 1
@@ -50,12 +51,16 @@ export default class MainHead extends Vue {
 
   search () {
     this.$store.commit('loading', true)
-    const apiKey = this.$config.youtubeApi
-    const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}`
+    const params = {
+      safeSearch: 'none',
+      maxResults: 50,
+      q: this.searchTerm,
+      key: this.$config.youtubeApi
+    }
 
-    return this.$axios.get(url)
+    return this.$axios.get('/search', { params })
       .then(({ data }) => this.$store.commit('videos', data.items))
-      .catch(this.$nuxt.error)
+      .catch(console.log)
       .finally(() => (this.$store.commit('loading', false)))
   }
 }

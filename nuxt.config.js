@@ -29,7 +29,10 @@ export default {
   },
 
   publicRuntimeConfig: {
-    youtubeApi: process.env.YOUTUBE_API
+    youtubeApi: process.env.YOUTUBE_API,
+    axios: {
+      baseURL: process.env.BASE_URL
+    }
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
