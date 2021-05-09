@@ -1,75 +1,48 @@
 <template>
-  <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">
-        @kronhyx/ahgora
-      </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
+  <div>
+    <MainHead />
+    <section>
+      <b-container>
+        <b-row class="mb-4">
+          <template v-if="loading">
+            <b-col v-for="skeleton in 9" :key="skeleton" md="6" lg="4" class="d-flex">
+              <b-card class="w-100" no-body img-top>
+                <b-skeleton-img />
+                <b-card-body>
+                  <b-skeleton width="20%" />
+                  <hr>
+                  <b-skeleton width="55%" />
+                  <br>
+                  <b-skeleton width="85%" />
+                  <b-skeleton width="70%" />
+                  <hr>
+                  <b-skeleton type="avatar" />
+                </b-card-body>
+              </b-card>
+            </b-col>
+          </template>
+          <b-col md="6" lg="4" class="d-flex">
+            CardStoryblok :story="story"
+          </b-col>
+        </b-row>
+      </b-container>
+    </section>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue } from 'nuxt-property-decorator'
+import { MetaInfo } from 'vue-meta'
+import MainHead from '@/components/MainHead.vue'
 
-export default Vue.extend({})
+@Component({ components: { MainHead } })
+export default class IndexPage extends Vue {
+  protected loading = true
+
+  head (): MetaInfo {
+    return {
+      title: 'Posts'
+    }
+  }
+}
 </script>
-
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
-</style>

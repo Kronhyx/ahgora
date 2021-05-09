@@ -9,12 +9,15 @@
           </h1>
         </b-col>
         <b-col cols="12">
-          <b-form>
+          <b-form class="w-75 mx-auto" @submit.prevent="search">
             <b-form-row>
               <b-input-group size="lg">
-                <b-form-input placeholder="Search" />
+                <b-form-input placeholder="Search" class="h-100" :disabled="loading" />
                 <template #append>
-                  <b-form-input type="number" size="lg" />
+                  <b-btn variant="primary" type="submit" :disabled="loading">
+                    <span v-show="!loading">OK</span>
+                    <b-spinner v-show="loading" small />
+                  </b-btn>
                 </template>
               </b-input-group>
             </b-form-row>
@@ -35,12 +38,19 @@ import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component({ components: { TopDivider } })
 export default class MainHead extends Vue {
+  protected loading = false
+
   get randomHue () {
     return Math.floor(Math.random() * 360) + 1
   }
 
-  get minutes () {
-    return [15, 20, 30, 40, 90, 120, 150]
+  search () {
+    this.loading = true
+
+    return this.$axios.get('https://www.googleapis.com/youtube/v3/videos?key=YOUR_API_KEY&part=snippet&id=T0Jqdjbed40')
+      .then(console.log)
+      .catch(console.warn)
+      .finally(() => (this.loading = false))
   }
 }
 </script>
