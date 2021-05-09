@@ -21,8 +21,8 @@
               </b-card>
             </b-col>
           </template>
-          <b-col md="6" lg="4" class="d-flex">
-            CardStoryblok :story="story"
+          <b-col v-for="video in videos" :key="video.etag" md="6" lg="4" class="d-flex">
+            <YoutubeCard :video="video.id" />
           </b-col>
         </b-row>
       </b-container>
@@ -31,17 +31,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import { MetaInfo } from 'vue-meta'
 import MainHead from '@/components/MainHead.vue'
+import { Component, Getter, Vue } from 'nuxt-property-decorator'
+import { MetaInfo } from 'vue-meta'
+import YoutubeCard from '~/components/YoutubeCard.vue'
 
-@Component({ components: { MainHead } })
+@Component({ components: { YoutubeCard, MainHead } })
 export default class IndexPage extends Vue {
-  protected loading = true
+  @Getter('videos') readonly videos!: any[]
+  @Getter('isLoading') readonly loading!: boolean
 
   head (): MetaInfo {
     return {
-      title: 'Posts'
+      title: 'Videos'
     }
   }
 }

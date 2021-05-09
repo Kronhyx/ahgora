@@ -44,15 +44,19 @@ export default class MainHead extends Vue {
     return Math.floor(Math.random() * 360) + 1
   }
 
+  fetch () {
+    return this.search()
+  }
+
   search () {
-    this.loading = true
+    this.$store.commit('loading', true)
     const apiKey = this.$config.youtubeApi
     const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}`
 
     return this.$axios.get(url)
       .then(({ data }) => this.$store.commit('videos', data.items))
       .catch(this.$nuxt.error)
-      .finally(() => (this.loading = false))
+      .finally(() => (this.$store.commit('loading', false)))
   }
 }
 </script>
