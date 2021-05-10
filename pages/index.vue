@@ -22,7 +22,7 @@
             </b-col>
           </template>
           <b-col v-for="video in videos" :key="video.etag" md="6" lg="4" class="d-flex">
-            <YoutubeCard :id="video.id.videoId" />
+            <YoutubeCard :video="video" />
           </b-col>
         </b-row>
       </b-container>

@@ -1,9 +1,9 @@
 <template>
-  <div class="card">
+  <b-card no-body>
     <a href="#">
-      <b-card-img-lazy :src="image" alt="Image" top />
+      <b-card-img-lazy :src="snippets.thumbnails.default" alt="Image" top />
     </a>
-    <div class="card-body d-flex flex-column">
+    <b-card-body class="d-flex flex-column">
       <div class="d-flex justify-content-between mb-3">
         <div class="text-small d-flex">
           <div class="mr-2">
@@ -25,8 +25,8 @@
           <span class="text-small">Anne Souzakis</span>
         </div>
       </div>
-    </div>
-  </div>
+    </b-card-body>
+  </b-card>
 </template>
 
 <script lang="ts">
@@ -34,22 +34,18 @@ import { Component, Prop, Vue } from 'nuxt-property-decorator'
 
 @Component({ })
 export default class YoutubeCard extends Vue {
-  @Prop({ required: true, type: String }) readonly id!: string
+  @Prop({ required: true, type: String }) readonly video!: any
 
   get image () {
-    return `https://img.youtube.com/vi/${this.id}/0.jpg`
+    return this.snippets.thumbnails.default
   }
 
-  fetch () {
-    const params = {
-      id: this.id,
-      key: this.$config.youtubeApi,
-      maxResults: 1,
-      part: 'snippet, contentDetails'
-    }
+  get snippets () {
+    return this.video.snippets
+  }
 
-    return this.$axios.get('/videos', { params })
-      .then(console.log)
+  get details () {
+    return this.video.contentDetails
   }
 }
 </script>

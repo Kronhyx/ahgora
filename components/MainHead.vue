@@ -49,7 +49,7 @@ export default class MainHead extends Vue {
     return this.search()
   }
 
-  search () {
+  async search () {
     this.$store.commit('loading', true)
     const params = {
       safeSearch: 'none',
@@ -58,9 +58,24 @@ export default class MainHead extends Vue {
       key: this.$config.youtubeApi
     }
 
-    return this.$axios.get('/search', { params })
+    const items:any[] = await this.$axios.get('/search', { params })
+      .then(({ data }) => data.items)
+      .catch(console.warn)
+
+    const ids = items
+      .filter(({ id }: any) => id.kind === 'youtube#video')
+      .map(({ id }: any) => id.videoId)
+      .join(',')
+
+    const videoParams = {
+      id: ids,
+      part: 'snippet, contentDetails',
+      key: this.$config.youtubeApi
+    }
+
+    return this.$axios.get('/videos', { params: videoParams })
       .then(({ data }) => this.$store.commit('videos', data.items))
-      .catch(console.log)
+      .catch(console.warn)
       .finally(() => (this.$store.commit('loading', false)))
   }
 }
