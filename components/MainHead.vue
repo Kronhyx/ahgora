@@ -12,13 +12,14 @@
           <b-form class="w-75 mx-auto" @submit.prevent="search">
             <b-form-row>
               <b-input-group size="lg">
-                <b-form-input v-model="searchTerm" placeholder="Search" class="h-100" :disabled="loading" />
-                <template #append>
+                <b-form-input v-model="searchTerm" placeholder="Search" class="h-100 w-75" :disabled="loading" />
+                <b-input-group-append class="w-25">
+                  <b-form-input v-model.number="availableMin" type="number" size="lg" class="h-100 rounded-0" placeholder="minutes" />
                   <b-btn variant="primary" type="submit" :disabled="loading">
                     <span v-show="!loading">OK</span>
                     <b-spinner v-show="loading" small />
                   </b-btn>
-                </template>
+                </b-input-group-append>
               </b-input-group>
             </b-form-row>
           </b-form>
@@ -39,7 +40,8 @@ import { Component, Getter, Vue } from 'nuxt-property-decorator'
 @Component({ components: { TopDivider } })
 export default class MainHead extends Vue {
   @Getter('isLoading') readonly loading!: boolean
-  protected searchTerm: string = ''
+  protected searchTerm = ''
+  protected availableMin = 15
 
   get randomHue () {
     return Math.floor(Math.random() * 360) + 1
@@ -51,6 +53,8 @@ export default class MainHead extends Vue {
 
   async search () {
     this.$store.commit('loading', true)
+    this.$store.commit('minutes', this.availableMin)
+
     const params = {
       safeSearch: 'none',
       maxResults: 50,
