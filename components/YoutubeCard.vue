@@ -1,28 +1,15 @@
 <template>
-  <b-card class="rounded shadow hover-shadow-3d" no-body>
-    <a href="#">
+  <b-card no-body>
+    <b-card-header class="p-0 position-relative">
       <b-card-img-lazy :src="snippet.thumbnails.medium.url" :alt="snippet.title" top />
-    </a>
-    <b-card-body class="d-flex flex-column" body-class="bg-light">
-      <div class="d-flex justify-content-between mb-3">
-        <div class="text-small d-flex">
-          <div class="mr-2">
-            <a href="#">Finance</a>
-          </div>
-          <span class="text-muted">16th November</span>
-        </div>
-      </div>
-      <a href="#">
-        <span class="h6 font-weight-bold" v-text="snippet.title" />
-      </a>
-      <p class="flex-grow-1 overflow-hidden" v-text="snippet.description" />
-      <div class="d-flex align-items-center mt-3">
-        <img src="https://leap.mediumra.re/assets/img/avatars/female-3.jpg" alt="Image" class="avatar avatar-sm">
-        <div class="ml-1">
-          <span class="text-small text-muted">By</span>
-          <span class="text-small" v-text="snippet.channelTitle" />
-        </div>
-      </div>
+      <b-badge class="position-absolute" v-text="$moment.utc(duration.asMilliseconds()).format('mm:ss')" />
+    </b-card-header>
+    <b-card-body>
+      <b-card-title title-tag="h5" v-text="snippet.channelTitle" />
+      <b-card-text v-text="snippet.title" />
+      <b-btn variant="primary">
+        Go somewhere
+      </b-btn>
     </b-card-body>
   </b-card>
 </template>
@@ -42,11 +29,20 @@ export default class YoutubeCard extends Vue {
   get details () {
     return this.video.contentDetails
   }
+
+  get duration () {
+    return this.$moment.duration(this.details?.duration)
+  }
 }
 </script>
 
 <style scoped>
 .card {
-  height: 510px !important;
+  height: 400px !important;
+}
+
+.badge{
+  bottom: .5em;
+  right: .5em;
 }
 </style>
