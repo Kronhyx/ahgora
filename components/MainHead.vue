@@ -2,7 +2,7 @@
   <section class="has-divider text-light overlay">
     <div class="h-100 position-absolute w-100 wallpaper" :style="{filter: `hue-rotate(${randomHue}deg)`}" />
     <b-container>
-      <b-row align-h="center" class="flex-column">
+      <b-row align-h="center" class="flex-column text-center">
         <b-col cols="12" class="text-center">
           <h1 class="display-4">
             Search videos
@@ -24,6 +24,9 @@
             </b-form-row>
           </b-form>
         </b-col>
+        <b-col v-if="daysToWatch" cols="12" class="pt-3">
+          <span class="h5">{{ daysToWatch.humanize() }} are needed to watch all vídeos</span>
+        </b-col>
       </b-row>
     </b-container>
     <div class="divider">
@@ -36,10 +39,12 @@
 // @ts-ignore
 import TopDivider from '@/static/images/divider.svg?inline'
 import { Component, Getter, Vue } from 'nuxt-property-decorator'
+import * as moment from 'moment'
 
 @Component({ components: { TopDivider } })
 export default class MainHead extends Vue {
   @Getter('isLoading') readonly loading!: boolean
+  @Getter('daysToWatch') readonly daysToWatch!: moment.Duration
   protected searchTerm = ''
   protected availableMin = 15
 
