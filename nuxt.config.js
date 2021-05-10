@@ -47,7 +47,8 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     ['@nuxt/typescript-build', {}], // https://go.nuxtjs.dev/typescript
-    ['@nuxtjs/svg', {}]// https://github.com/nuxt-community/svg-module
+    ['@nuxtjs/svg', {}], // https://github.com/nuxt-community/svg-module
+    ['@nuxtjs/moment', { }] // https://github.com/nuxt-community/moment-module
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
