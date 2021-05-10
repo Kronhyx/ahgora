@@ -1,16 +1,18 @@
 <template>
-  <b-card class="shadow" body-bg-variant="light" no-body>
+  <b-card class="shadow w-100" body-bg-variant="light" no-body>
     <b-card-header class="p-0 position-relative">
       <b-card-img-lazy :src="snippet.thumbnails.medium.url" :alt="snippet.title" top />
       <b-badge class="position-absolute" v-text="$moment.utc(duration.asMilliseconds()).format('mm:ss')" />
     </b-card-header>
-    <b-card-body>
+    <b-card-body class="d-flex flex-column">
       <b-card-title title-tag="h5" v-text="snippet.channelTitle" />
-      <b-card-text v-text="snippet.title" />
-      <b-btn variant="primary">
-        Go somewhere
-      </b-btn>
+      <b-card-text class="flex-fill" v-text="snippet.title" />
     </b-card-body>
+    <b-card-footer>
+      <b-btn variant="danger" block>
+        Go to YouTube
+      </b-btn>
+    </b-card-footer>
   </b-card>
 </template>
 
